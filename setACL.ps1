@@ -21,7 +21,7 @@
 # Windows domain to pull user from (enter computer name for local users)
 $domain = "bobst.lib"
 
-# Do not modify this line
+# Initialize hash
 $user = @{}
 
 # List of users to add permissions to
