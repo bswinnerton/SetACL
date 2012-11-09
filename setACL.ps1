@@ -21,6 +21,9 @@
 # Windows domain to pull user from (enter computer name for local users)
 $domain = "bobst.lib"
 
+# Path to files in question
+$path = "P:\tests\"
+
 # Initialize hash
 $user = @{}
 
@@ -37,12 +40,12 @@ $user[1]["permission"] = "Modify"
 
 ## Code execution
 
-$acl = get-acl "P:\tests\"
+$acl = get-acl $path
 for ($i = 0; $i -lt $user.count; $i++)
 {
 	$accessRule = new-object System.Security.AccessControl.FileSystemAccessRule ($user[$i]["name"], $user[$i]["permission"], "ContainerInherit,ObjectInherit", "None", "Allow")
 	$acl.AddAccessRule($accessRule)
 }
-$acl | set-acl "P:\tests\"
+$acl | set-acl $path
 
 exit
