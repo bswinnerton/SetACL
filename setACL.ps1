@@ -21,20 +21,20 @@
 # Windows domain to pull user from (enter computer name for local users)
 $domain = "bobst.lib"
 
-# Path to files in question
+# Path to files in question. Leave trailing slash
 $path = "P:\tests\"
 
 # Initialize hash
 $user = @{}
 
-# List of users to add permissions to
-$user[0] = @{}
-$user[0]["name"] = "bs122"
-$user[0]["permission"] = "FullControl"
+# List of users to add permissions to. Be sure to increment array
+#$user[0] = @{}
+#$user[0]["name"] = "bs122"
+#$user[0]["permission"] = "FullControl"
 
-$user[1] = @{}
-$user[1]["name"] = "rdf6"
-$user[1]["permission"] = "Modify"
+#$user[1] = @{}
+#$user[1]["name"] = "rdf6"
+#$user[1]["permission"] = "Modify"
 
 
 
