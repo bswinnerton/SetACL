@@ -22,7 +22,7 @@
 $domain = "bobst.lib"
 
 # Path to files in question. Leave trailing slash
-$path = "P:\tests\"
+$path = "C:\test\"
 
 # Initialize hash
 $user = @{}
@@ -40,12 +40,24 @@ $user = @{}
 
 ## Code execution
 
-$acl = get-acl $path
-for ($i = 0; $i -lt $user.count; $i++)
+foreach ($file in Get-ChildItem $path)
 {
-	$accessRule = new-object System.Security.AccessControl.FileSystemAccessRule ($user[$i]["name"], $user[$i]["permission"], "ContainerInherit,ObjectInherit", "None", "Allow")
-	$acl.AddAccessRule($accessRule)
+	$acl = get-acl $file
+	$lastWriteTime = $file.lastwritetime
+	$lastAccessTime = $file.lastaccesstime
+	$creationTime = $file.creationtime
+	
+	for ($i = 0; $i -lt $user.count; $i++)
+	{
+		$accessRule = new-object System.Security.AccessControl.FileSystemAccessRule ($user[$i]["name"], $user[$i]["permission"], "None", "None", "Allow")
+		$acl.AddAccessRule($accessRule)
+	}
+	
+	$acl | set-acl $file
+	
+	$file.lastwritetime = $lastWriteTime
+	$file.lastaccesstime = $lastAccessTime
+	$file.creationtime = $creationTime
 }
-$acl | set-acl $path
 
 exit
