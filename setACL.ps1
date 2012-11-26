@@ -42,7 +42,7 @@ $user = @{}
 
 foreach ($file in Get-ChildItem $path)
 {
-	$acl = get-acl $file
+	$acl = get-acl ($path + $file)
 	$lastWriteTime = $file.lastwritetime
 	$lastAccessTime = $file.lastaccesstime
 	$creationTime = $file.creationtime
@@ -53,7 +53,7 @@ foreach ($file in Get-ChildItem $path)
 		$acl.AddAccessRule($accessRule)
 	}
 	
-	$acl | set-acl $file
+	$acl | set-acl ($path + $file)
 	
 	$file.lastwritetime = $lastWriteTime
 	$file.lastaccesstime = $lastAccessTime
