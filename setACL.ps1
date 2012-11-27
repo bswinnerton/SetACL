@@ -28,6 +28,7 @@ $path = "C:\test\"
 $user = @{}
 
 # List of users to add permissions to. Be sure to increment array
+
 #$user[0] = @{}
 #$user[0]["name"] = "bs122"
 #$user[0]["permission"] = "FullControl"
@@ -36,25 +37,36 @@ $user = @{}
 #$user[1]["name"] = "rdf6"
 #$user[1]["permission"] = "Modify"
 
+$user[0] = @{}
+$user[0]["name"] = ""
+$user[0]["permission"] = "FullControl"
 
 
 ## Code execution
 
 foreach ($file in Get-ChildItem $path)
 {
+
+	# Get ACL
 	$acl = get-acl ($path + $file)
+	
+	# Get times
 	$lastWriteTime = $file.lastwritetime
 	$lastAccessTime = $file.lastaccesstime
 	$creationTime = $file.creationtime
 	
+	
+	# Add access rule for each user in above array
 	for ($i = 0; $i -lt $user.count; $i++)
 	{
 		$accessRule = new-object System.Security.AccessControl.FileSystemAccessRule ($user[$i]["name"], $user[$i]["permission"], "None", "None", "Allow")
 		$acl.AddAccessRule($accessRule)
 	}
 	
+	# Set ACL
 	$acl | set-acl ($path + $file)
 	
+	# Set old times so nothing is overwritten
 	$file.lastwritetime = $lastWriteTime
 	$file.lastaccesstime = $lastAccessTime
 	$file.creationtime = $creationTime
