@@ -52,13 +52,12 @@ for ($i = 0; $i -lt $path.count; $i++)
 	{
 
 		# Get ACL of file
-		$acl = get-acl ($path[$i] + $file)
+		$acl = (Get-Item ($path[$i] + $file)).GetAccessControl("Access")
 		
 		# Get original times
 		$lastWriteTime = $file.lastwritetime
 		$lastAccessTime = $file.lastaccesstime
 		$creationTime = $file.creationtime
-		
 		
 		# Add access rule for each user in above hash
 		for ($j = 0; $j -lt $user.count; $j++)
